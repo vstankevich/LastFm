@@ -1,39 +1,95 @@
 package com.vstankevich.lastfm.singer.view
 
+import android.app.SearchManager
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.TextureView
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
+import android.view.*
+import by.synesis.common.adapters.RecyclerAdapter
 import com.vstankevich.lastfm.R
+import com.vstankevich.lastfm.singer.Artist
+import com.vstankevich.lastfm.singer.items.SingerItem
 import com.vstankevich.lastfm.singer.viewmodel.SingerViewModel
-import kotlinx.android.synthetic.main.fragment_signer.view.*
+import kotlinx.android.synthetic.main.fragment_signer.*
+
 
 /**
  * Created by victor.stankevich on 11.07.2018.
  */
-class SignerListFragment : Fragment() {
+class ArtistListFragment : Fragment() {
 
     private val signerViewModel: SingerViewModel by lazy {
         ViewModelProviders.of(activity!!).get(SingerViewModel::class.java)
     }
 
-    var signerName: TextView?  = null
+    private var searchView: SearchView? = null
+    private var queryTextListener: SearchView.OnQueryTextListener? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_signer, container, false)
-        signerName = view.findViewById<TextView>(R.id.fs_signer_name)
-        signerViewModel.loadData("Led Zeppelin")
-        signerViewModel.name.observe(this, Observer<String> {this.setSingerName(it!!)})
-        return view
+    private lateinit var adapter: RecyclerAdapter
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_signer, container, false)
     }
 
-    private fun setSingerName(name: String) {
-        signerName?.text = name
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        singers.layoutManager = LinearLayoutManager(context!!)
+        adapter = RecyclerAdapter(context!!, arrayListOf())
+        singers.adapter = adapter
+
+        signerViewModel.name.observe(this, Observer<List<Artist>> { it?.let { setSingerName(it) } })
+        signerViewModel.loadTopArtists()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        searchView = searchItem?.actionView as SearchView
+        searchView?.let {
+            it.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            queryTextListener = object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean = true
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    signerViewModel.searchArtistByName(query)
+                    return true
+                }
+            }
+            it.setOnQueryTextListener(queryTextListener)
+        }
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_search ->
+                return false
+        }
+        searchView?.setOnQueryTextListener(queryTextListener)
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun setSingerName(artists: List<Artist>) {
+        adapter.updateAdapter(SingerItem.generateItems(artists))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        signerViewModel.clear()
     }
 }

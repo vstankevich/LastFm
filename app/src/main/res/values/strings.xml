@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LastFmX</string>
+
+    <string name="singer_search">Search</string>
 </resources>

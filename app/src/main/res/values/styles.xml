@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="LastFmText">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <style name="LastFmText.Big">
+        <item name="android:textSize">@dimen/font_size_big</item>
+    </style>
 </resources>
