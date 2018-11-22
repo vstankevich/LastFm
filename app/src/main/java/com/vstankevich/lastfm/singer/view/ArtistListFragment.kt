@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.*
 import by.synesis.common.adapters.RecyclerAdapter
+import com.vstankevich.lastfm.FragmentsRouter
 import com.vstankevich.lastfm.R
 import com.vstankevich.lastfm.singer.Artist
 import com.vstankevich.lastfm.singer.items.SingerItem
@@ -41,7 +42,12 @@ class ArtistListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         singers.layoutManager = LinearLayoutManager(context!!)
-        adapter = RecyclerAdapter(context!!, arrayListOf())
+        adapter = RecyclerAdapter(context!!, arrayListOf()) {
+            it as SingerItem
+            FragmentsRouter.to(activity?.supportFragmentManager!!,
+                               ArtistDetailsFragment.newInstance(it.artist.mbid),
+                               ArtistDetailsFragment.TAG)
+        }
         singers.adapter = adapter
 
         signerViewModel.name.observe(this, Observer<List<Artist>> { it?.let { setSingerName(it) } })

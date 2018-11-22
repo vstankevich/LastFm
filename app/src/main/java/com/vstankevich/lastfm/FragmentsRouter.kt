@@ -9,8 +9,11 @@ import android.support.v4.app.FragmentManager
  */
 object FragmentsRouter {
 
-    fun to(fragmentManager: FragmentManager, fragment: Fragment, @IdRes container: Int = R.id.container) {
+    fun to(fragmentManager: FragmentManager, fragment: Fragment, tag: String? = null, @IdRes container: Int = R.id.container) {
         val transaction = fragmentManager.beginTransaction()
-        transaction.replace(container, fragment).commitAllowingStateLoss()
+        if (!tag.isNullOrEmpty()) {
+            transaction.addToBackStack(tag)
+        }
+        transaction.replace(container, fragment, tag).commitAllowingStateLoss()
     }
 }

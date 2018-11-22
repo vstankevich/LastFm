@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -15,5 +15,17 @@
 
     <style name="LastFmText.Big">
         <item name="android:textSize">@dimen/font_size_big</item>
+    </style>
+
+    <style name="LastFmText.ExtraBig">
+        <item name="android:textSize">@dimen/font_size_extra_big</item>
+    </style>
+
+    <style name="LastFmText.ExtraBig.White">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="LastFmText.Big.White">
+        <item name="android:textColor">@android:color/white</item>
     </style>
 </resources>

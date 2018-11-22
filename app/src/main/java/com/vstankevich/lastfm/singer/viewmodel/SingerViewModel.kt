@@ -54,5 +54,4 @@ class SingerViewModel(app: Application) : AndroidViewModel(app) {
         compositeDisposable.dispose()
         compositeDisposable.clear()
     }
-
 }
