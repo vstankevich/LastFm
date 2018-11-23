@@ -1,9 +1,9 @@
 package com.vstankevich.lastfm.singer.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.vstankevich.lastfm.singer.Artist
 import com.vstankevich.lastfm.singer.repository.SingerRepository
 import io.reactivex.disposables.CompositeDisposable

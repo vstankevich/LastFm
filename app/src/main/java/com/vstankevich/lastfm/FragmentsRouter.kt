@@ -1,8 +1,8 @@
 package com.vstankevich.lastfm
 
-import android.support.annotation.IdRes
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.annotation.IdRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
 /**
  * Created by victor.stankevich on 11.07.2018.

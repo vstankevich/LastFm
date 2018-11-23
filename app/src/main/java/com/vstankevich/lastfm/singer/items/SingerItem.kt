@@ -2,7 +2,7 @@ package com.vstankevich.lastfm.singer.items
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

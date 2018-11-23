@@ -1,8 +1,8 @@
 package com.vstankevich.lastfm
 
 import android.content.Context
-import android.support.annotation.LayoutRes
 import android.view.View
+import androidx.annotation.LayoutRes
 
 interface RecyclerItem {
 
