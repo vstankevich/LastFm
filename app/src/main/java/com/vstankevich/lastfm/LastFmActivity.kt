@@ -9,6 +9,6 @@ class LastFmActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lastfm)
-        FragmentsRouter.to(supportFragmentManager, ArtistListFragment())
+        FragmentsRouter.to(supportFragmentManager, ArtistListFragment.newInstance())
     }
 }

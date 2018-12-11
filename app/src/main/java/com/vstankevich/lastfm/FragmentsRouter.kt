@@ -16,4 +16,8 @@ object FragmentsRouter {
         }
         transaction.replace(container, fragment, tag).commitAllowingStateLoss()
     }
+
+    fun back(fragmentManager: FragmentManager) {
+        fragmentManager.popBackStackImmediate()
+    }
 }

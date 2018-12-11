@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.vstankevich.lastfm.singer.Artist
+import com.vstankevich.lastfm.singer.DataState
 import com.vstankevich.lastfm.singer.repository.SingerRepository
 import io.reactivex.disposables.Disposable
 
@@ -17,6 +18,10 @@ class SingerDetailsViewModel(app: Application) : AndroidViewModel(app) {
         SingerRepository()
     }
 
+    val dataState: MutableLiveData<DataState> by lazy {
+        MutableLiveData<DataState>()
+    }
+
     val artist: MutableLiveData<Artist> by lazy {
         MutableLiveData<Artist>()
     }
@@ -25,8 +30,14 @@ class SingerDetailsViewModel(app: Application) : AndroidViewModel(app) {
 
     fun getDetailsById(id: String) {
         artistDisposable = repository.getSingersDatails(id).subscribe({
-                                                                         artist.postValue(it.artist)
-                                                                     }, {})
+                                                                          artist.postValue(
+                                                                                  it.artist)
+                                                                          dataState.postValue(
+                                                                                  DataState.SUCCESS)
+                                                                      }, {
+                                                                          dataState.postValue(
+                                                                                  DataState.ERROR)
+                                                                      })
     }
 
     fun clear() {

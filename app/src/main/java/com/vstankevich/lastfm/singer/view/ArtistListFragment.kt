@@ -52,8 +52,7 @@ class ArtistListFragment : Fragment() {
         adapter = RecyclerAdapter(context!!, arrayListOf()) {
             it as SingerItem
             FragmentsRouter.to(activity?.supportFragmentManager!!,
-                               ArtistDetailsFragment.newInstance(it.artist.mbid),
-                               ArtistDetailsFragment.TAG)
+                               ArtistDetailsFragment.newInstance(it.artist.mbid), ArtistDetailsFragment.TAG)
         }
         singers.adapter = adapter
 
@@ -104,6 +103,11 @@ class ArtistListFragment : Fragment() {
             DataState.START -> singersProgress.visibility = VISIBLE
             DataState.SUCCESS, DataState.ERROR -> singersProgress.visibility = GONE
         }
+    }
+
+    companion object {
+        val TAG = ArtistListFragment::class.java.simpleName
+        fun newInstance(): ArtistListFragment = ArtistListFragment()
     }
 
     override fun onDestroy() {
