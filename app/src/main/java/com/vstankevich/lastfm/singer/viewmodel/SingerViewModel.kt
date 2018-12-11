@@ -1,10 +1,10 @@
 package com.vstankevich.lastfm.singer.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.vstankevich.lastfm.singer.Artist
+import com.vstankevich.lastfm.singer.DataState
 import com.vstankevich.lastfm.singer.repository.SingerRepository
 import io.reactivex.disposables.CompositeDisposable
 
@@ -23,30 +23,41 @@ class SingerViewModel(app: Application) : AndroidViewModel(app) {
         MutableLiveData<List<Artist>>()
     }
 
+    val dataState: MutableLiveData<DataState> by lazy {
+        MutableLiveData<DataState>()
+    }
+
     private val compositeDisposable: CompositeDisposable by lazy {
         CompositeDisposable()
     }
 
     fun searchArtistByName(artistName: String) {
         compositeDisposable.add(repository.getSingersByName(artistName)
+                                        .doOnSubscribe {
+                                            dataState.postValue(DataState.START)
+                                        }
                                         .subscribe({
                                                        name.postValue(
                                                                it.results.artistmatches.artist)
+                                                       dataState.postValue(DataState.SUCCESS)
                                                    }, {
-                                                       Log.d(TAG,
-                                                             "Error: " + it.message)
+                                                       dataState.postValue(DataState.ERROR)
                                                    }))
 
     }
 
     fun loadTopArtists() {
         compositeDisposable.add(repository.getTopSingers()
+                                        .doOnSubscribe {
+                                            dataState.postValue(DataState.START)
+                                        }
                                         .subscribe({
                                                        name.postValue(
                                                                it.artists.artist)
+                                                       dataState.postValue(DataState.SUCCESS)
                                                    }, {
-                                                       Log.d(TAG,
-                                                             "Error: " + it.message)
+                                                       dataState.postValue(DataState.ERROR)
+
                                                    }))
     }
 
